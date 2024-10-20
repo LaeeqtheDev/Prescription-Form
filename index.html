@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="/assets/logo.png">
   <title>Prescription Form</title>
   <style>
     body {
@@ -156,7 +157,7 @@
         const doc = new jsPDF();
         const blueWidth = 80;
         // Set the blue background color on the left side
-        doc.setFillColor(129, 205, 198)/100;
+        doc.setFillColor(129, 205, 198);
         doc.rect(0, 0, blueWidth, 297, 'F'); // Blue section (40%) on the left
 
         // Gather form data
@@ -224,18 +225,19 @@
             doc.text(`Sex: ${sex}`, sexX, startY);
             doc.text(`Date: ${date}`, dateX, startY);
 
-            // Full-width prescription text
-            doc.text("Prescription Notes:", 10, startY + 20);
+            // Adjust the position for the prescription notes to ensure they stay within the white area
+            const prescriptionStartY = 100; // Adjust this value to move it further down if needed
+            const prescriptionX = 85; // Starting X position for prescription notes to stay within white area
+
             doc.setFontSize(12);
-            doc.text(notes, 10, startY + 30, { maxWidth: 190 }); // Crossing the blue section, full-width
+            doc.text("Prescription Notes:", prescriptionX, prescriptionStartY);
+            doc.text(notes, prescriptionX, prescriptionStartY + 10, { maxWidth: 120 }); // Width adjusted for white area
 
             // Save the PDF after adding all elements
             doc.save('prescription.pdf');
         };
     }
 </script>
-
-
 
 
 
