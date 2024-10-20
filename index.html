@@ -24,10 +24,9 @@
     }
 
     .left-section {
-      width: 40%; /* Blue section width remains 40% */
+      width: 40%;
       background-color: #81cdc6;
       height: 100vh;
-      /* Updated blue color */
       padding: 20px;
       display: flex;
       flex-direction: column;
@@ -36,20 +35,18 @@
     }
 
     .right-section {
-      width: 60%; /* Adjusted right side to 60% */
+      width: 60%;
       padding-left: 30px;
-      position: relative; /* Added for absolute logo positioning */
+      position: relative;
     }
 
     .left-section img {
-  width: 250px;           /* Set width */
-  height: 250px;          /* Set height */
-  max-width: 250px;       /* Enforce maximum width */
-  max-height: 250px;      /* Enforce maximum height */
-  object-fit: contain;   /* Maintain aspect ratio */
- 
-}
-
+      width: 250px;
+      height: 250px;
+      max-width: 250px;
+      max-height: 250px;
+      object-fit: contain;
+    }
 
     h2 {
       text-align: center;
@@ -65,7 +62,6 @@
 
     .form-group {
       margin-bottom: 15px;
-      
     }
 
     .form-group label {
@@ -81,7 +77,6 @@
       padding: 8px;
       border: 1px solid #ccc;
       border-radius: 4px;
-      
     }
 
     button {
@@ -102,20 +97,16 @@
 <body>
 
   <div class="container">
-    <!-- Left Section with Doctor's Details -->
     <div class="left-section">
         <img src="/assets/logo.png" alt="Clinic Logo"> 
-      <h2>Dr. Fatima Saba</h2> <!-- Doctor's name moved here -->
-      <h5 style="font-style: italic;">Dermatologist (PG DIP RCP-IRELAND)</h5> <!-- Italicized qualifications -->
-      <h5 style="font-style: italic;">Master Medical Aesthetic Certified</h5> <!-- Italicized qualifications -->
+      <h2>Dr. Fatima Saba</h2>
+      <h5 style="font-style: italic;">Dermatologist (PG DIP RCP-IRELAND)</h5>
+      <h5 style="font-style: italic;">Master Medical Aesthetic Certified</h5>
     </div>
 
-    <!-- Right Section with Logo and Form -->
     <div class="right-section">
-     <!-- Logo moved to the top right -->
       <h2>Prescription Form</h2>
       <form id="prescriptionForm">
-        <!-- Moved patient details below doctor's qualifications -->
         <div class="form-group">
           <label for="patientName">Patient Name</label>
           <input type="text" id="patientName" placeholder="Enter patient name">
@@ -145,6 +136,11 @@
           <textarea id="notes" rows="5" placeholder="Enter prescription details here"></textarea>
         </div>
 
+        <div class="form-group">
+          <label for="extendedNotes">Extended Prescription Notes</label>
+          <textarea id="extendedNotes" rows="5" placeholder="Enter extended prescription details here"></textarea>
+        </div>
+
         <button type="button" onclick="generatePDF()">Download PDF</button>
       </form>
     </div>
@@ -156,6 +152,7 @@
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         const blueWidth = 80;
+
         // Set the blue background color on the left side
         doc.setFillColor(129, 205, 198);
         doc.rect(0, 0, blueWidth, 297, 'F'); // Blue section (40%) on the left
@@ -166,85 +163,117 @@
         const sex = document.getElementById('sex').value;
         const date = document.getElementById('date').value;
         const notes = document.getElementById('notes').value;
+        const extendedNotes = document.getElementById('extendedNotes').value;
 
         // Add the logo on the top right side
         const img = new Image();
-        img.src = '/assets/logo.png';
+        img.src = '/assets/logo.png'; // Make sure the path is correct
 
         img.onload = function() {
-            // Calculate the aspect ratio of the image
             const imgWidth = img.width;
             const imgHeight = img.height;
-            const targetWidth = 50; // Target width
-            const targetHeight = 50; // Target height
+            const targetWidth = 50; 
+            const targetHeight = 50;
 
-            // Calculate new dimensions to maintain aspect ratio
             let width, height;
             if (imgWidth > imgHeight) {
                 width = targetWidth;
-                height = (imgHeight / imgWidth) * targetWidth; // Maintain aspect ratio
+                height = (imgHeight / imgWidth) * targetWidth; 
             } else {
                 height = targetHeight;
-                width = (imgWidth / imgHeight) * targetHeight; // Maintain aspect ratio
+                width = (imgWidth / imgHeight) * targetHeight; 
             }
 
-            // Positioning the logo at the extreme right
-            const x = 210 - width - 10; // Adjusted X position for extreme right with some margin
-            const y = 9; // Y position for the image
+            const x = 210 - width - 10; 
+            const y = 9; 
 
-            // Add the image to the PDF with contained behavior
             doc.addImage(img, 'PNG', x, y, width, height);
 
-            // Add doctor name and qualifications on the left side
             doc.setFont("Helvetica", "bold");
             doc.setFontSize(20);
-            doc.text("Dr. Fatima Saba", 10, 20); // Moved to left side
-
-            // Italicized qualifications
+            doc.text("Dr. Fatima Saba", 10, 20); 
             doc.setFont("Helvetica", "italic");
             doc.setFontSize(11);
-            doc.text("Dermatologist (PG DIP RCP-IRELAND)", 10, 30); // Moved to left side
-            doc.text("Master Medical Aesthetic Certified", 10, 40); // Moved to left side
-
-            // Add patient info in a flex-like row layout on the left side
+            doc.text("Dermatologist (PG DIP RCP-IRELAND)", 10, 30);
+            doc.text("Master Medical Aesthetic Certified", 10, 40); 
             doc.setFont("Helvetica", "normal");
             doc.setFontSize(14);
 
-            const startY = 75; // Top margin for patient info
-            const padding = 10; // Space between fields
+            const startY = 75; 
+            const padding = 10; 
 
-            // Patient info positions on the left side
-            const nameX = 5; // X position for Patient Name
-            const ageX = nameX + 80 + padding; // X position for Age (70 is width of Patient Name)
-            const sexX = ageX + 20 + padding; // X position for Sex (30 is width of Age)
-            const dateX = sexX + 20 + padding; // X position for Date (30 is width of Sex)
+            const nameX = 5; 
+            const ageX = nameX + 80 + padding; 
+            const sexX = ageX + 20 + padding; 
+            const dateX = sexX + 20 + padding; 
 
-            // Draw the patient info in a flex row layout
             doc.text(`Patient Name: ${patientName}`, nameX, startY);
             doc.text(`Age: ${age}`, ageX, startY);
             doc.text(`Sex: ${sex}`, sexX, startY);
             doc.text(`Date: ${date}`, dateX, startY);
 
-            // Adjust the position for the prescription notes to ensure they stay within the white area
-            const prescriptionStartY = 100; // Adjust this value to move it further down if needed
-            const prescriptionX = 85; // Starting X position for prescription notes to stay within white area
+            const prescriptionStartY = 100; 
+            const prescriptionX = 85; 
+            const maxHeight = 297 - prescriptionStartY - 20; 
 
             doc.setFontSize(12);
             doc.text("Prescription Notes:", prescriptionX, prescriptionStartY);
-            doc.text(notes, prescriptionX, prescriptionStartY + 10, { maxWidth: 120 }); // Width adjusted for white area
+            const notesLines = doc.splitTextToSize(notes, 120);
+            let currentHeight = 0; 
 
-            // Save the PDF after adding all elements
+            for (let i = 0; i < notesLines.length; i++) {
+                const lineHeight = 10; 
+                if (currentHeight + lineHeight > maxHeight) {
+                    doc.addPage();
+                    doc.setFillColor(129, 205, 198);
+                    doc.rect(0, 0, blueWidth, 297, 'F'); 
+                    doc.addImage(img, 'PNG', x, y, width, height); 
+
+                    doc.setFont("Helvetica", "bold");
+                    doc.setFontSize(20);
+                    doc.text("Dr. Fatima Saba", 10, 20);
+                    doc.setFont("Helvetica", "italic");
+                    doc.setFontSize(11);
+                    doc.text("Dermatologist (PG DIP RCP-IRELAND)", 10, 30);
+                    doc.text("Master Medical Aesthetic Certified", 10, 40); 
+                    currentHeight = 0;
+                }
+                doc.text(notesLines[i], prescriptionX, prescriptionStartY + 10 + currentHeight);
+                currentHeight += lineHeight; 
+            }
+
+            // Handle Extended Prescription Notes
+            if (extendedNotes) {
+                doc.addPage(); // Add a new page for extended notes
+                doc.setFillColor(129, 205, 198);
+                doc.rect(0, 0, blueWidth, 297, 'F'); 
+                doc.addImage(img, 'PNG', x, y, width, height); 
+
+                doc.setFont("Helvetica", "bold");
+                doc.setFontSize(20);
+                doc.text("Dr. Fatima Saba", 10, 20);
+                doc.setFont("Helvetica", "italic");
+                doc.setFontSize(11);
+                doc.text("Dermatologist (PG DIP RCP-IRELAND)", 10, 30);
+                doc.text("Master Medical Aesthetic Certified", 10, 40); 
+
+                const extendedStartY = 75; 
+                doc.setFontSize(12);
+                doc.text("Extended Prescription Notes:", prescriptionX, extendedStartY);
+                const extendedLines = doc.splitTextToSize(extendedNotes, 120);
+                currentHeight = 0; 
+
+                for (let i = 0; i < extendedLines.length; i++) {
+                    const lineHeight = 10; 
+                    doc.text(extendedLines[i], prescriptionX, extendedStartY + 10 + currentHeight);
+                    currentHeight += lineHeight; 
+                }
+            }
+
+            // Save the PDF
             doc.save('prescription.pdf');
         };
     }
-</script>
-
-
-
-
-
-
-
-
+  </script>
 </body>
 </html>
