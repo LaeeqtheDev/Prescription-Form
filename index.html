@@ -6,104 +6,31 @@
   <link rel="icon" type="image/png" href="/assets/logo.png">
   <title>Prescription Form</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f7f7f7;
-    }
-
-    .container {
-      max-width: 1000px;
-      margin: 50px auto;
-      background-color: #fff;
-      padding: 20px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-      display: flex;
-      align-items: flex-start;
-    }
-
-    .left-section {
-      width: 40%;
-      background-color: #81cdc6;
-      height: 100vh;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-
-    .right-section {
-      width: 60%;
-      padding-left: 30px;
-      position: relative;
-    }
-
-    .left-section img {
-      width: 250px;
-      height: 250px;
-      max-width: 250px;
-      max-height: 250px;
-      object-fit: contain;
-    }
-
-    h2 {
-      text-align: center;
-      color: #333;
-      font-size: 40px;
-      width: fit-content;
-      margin-bottom: 1;
-    }
-
-    h3, h5 {
-      margin: 5px 0;
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-
-    .form-group input, 
-    .form-group select, 
-    .form-group textarea {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    button {
-      width: 100%;
-      padding: 10px;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f7f7f7; }
+    .container { max-width: 1000px; margin: 50px auto; background-color: #fff; padding: 20px; box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); display: flex; align-items: flex-start; }
+    .left-section { width: 40%; background-color: #81cdc6; height: 100vh; padding: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .right-section { width: 60%; padding-left: 30px; position: relative; }
+    .left-section img { width: 250px; height: 250px; object-fit: contain; }
+    h2 { text-align: center; color: #333; font-size: 40px; margin-bottom: 1; }
+    h3, h5 { margin: 5px 0; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+    .form-row { display: flex; flex-wrap: wrap; gap: 10px; }
+    .form-row .form-group { flex: 1 1 30%; min-width: 150px; }
+    .full-width { flex: 1 1 100%; }
+    button { width: 100%; padding: 10px; background-color: #007BFF; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background-color: #0056b3; }
   </style>
 </head>
 <body>
-
   <div class="container">
     <div class="left-section">
-        <img src="/assets/logo.png" alt="Clinic Logo"> 
+      <img src="/assets/logo.png" alt="Clinic Logo"> 
       <h2>Dr. Fatima Saba</h2>
       <h5 style="font-style: italic;">Dermatologist (PG DIP RCP-IRELAND)</h5>
       <h5 style="font-style: italic;">Master Medical Aesthetic Certified</h5>
     </div>
-
     <div class="right-section">
       <h2>Prescription Form</h2>
       <form id="prescriptionForm">
@@ -111,36 +38,36 @@
           <label for="patientName">Patient Name</label>
           <input type="text" id="patientName" placeholder="Enter patient name">
         </div>
-
-        <div class="form-group">
-          <label for="age">Age</label>
-          <input type="number" id="age" placeholder="Enter patient age">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" id="age" placeholder="Enter patient age">
+          </div>
+          <div class="form-group">
+            <label for="sex">Sex</label>
+            <select id="sex">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="date">Date</label>
+            <input type="date" id="date">
+          </div>
         </div>
-
         <div class="form-group">
-          <label for="sex">Sex</label>
-          <select id="sex">
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </select>
+          <label for="diagnosis">Diagnosis</label>
+          <textarea id="diagnosis" rows="3" placeholder="Enter diagnosis here"></textarea>
         </div>
-
-        <div class="form-group">
-          <label for="date">Date</label>
-          <input type="date" id="date">
-        </div>
-
         <div class="form-group">
           <label for="notes">Prescription Notes</label>
           <textarea id="notes" rows="5" placeholder="Enter prescription details here"></textarea>
         </div>
-
         <div class="form-group">
           <label for="extendedNotes">Extended Prescription Notes</label>
           <textarea id="extendedNotes" rows="5" placeholder="Enter extended prescription details here"></textarea>
         </div>
-
         <button type="button" onclick="generatePDF()">Download PDF</button>
       </form>
     </div>
@@ -149,130 +76,109 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
   <script>
     function generatePDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        const blueWidth = 80;
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      const blueWidth = 80;
+      doc.setFillColor(129, 205, 198);
+      doc.rect(0, 0, blueWidth, 297, 'F');
 
-        // Set the blue background color on the left side
-        doc.setFillColor(129, 205, 198);
-        doc.rect(0, 0, blueWidth, 297, 'F'); // Blue section (40%) on the left
+      const patientName = document.getElementById('patientName').value;
+      const age = document.getElementById('age').value;
+      const sex = document.getElementById('sex').value;
+      const date = document.getElementById('date').value;
+      const diagnosis = document.getElementById('diagnosis').value;
+      const notes = document.getElementById('notes').value;
+      const extendedNotes = document.getElementById('extendedNotes').value;
 
-        // Gather form data
-        const patientName = document.getElementById('patientName').value;
-        const age = document.getElementById('age').value;
-        const sex = document.getElementById('sex').value;
-        const date = document.getElementById('date').value;
-        const notes = document.getElementById('notes').value;
-        const extendedNotes = document.getElementById('extendedNotes').value;
+      const img = new Image();
+      img.src = '/assets/logo.png';
 
-        // Add the logo on the top right side
-        const img = new Image();
-        img.src = '/assets/logo.png'; // Make sure the path is correct
+      img.onload = function () {
+        const targetSize = 50;
+        const scale = Math.min(targetSize / img.width, targetSize / img.height);
+        const width = img.width * scale;
+        const height = img.height * scale;
+        const x = 210 - width - 10;
+        const y = 9;
 
-        img.onload = function() {
-            const imgWidth = img.width;
-            const imgHeight = img.height;
-            const targetWidth = 50; 
-            const targetHeight = 50;
+        doc.addImage(img, 'PNG', x, y, width, height);
 
-            let width, height;
-            if (imgWidth > imgHeight) {
-                width = targetWidth;
-                height = (imgHeight / imgWidth) * targetWidth; 
-            } else {
-                height = targetHeight;
-                width = (imgWidth / imgHeight) * targetHeight; 
-            }
+        doc.setFont('Helvetica', 'bold');
+        doc.setFontSize(20);
+        doc.text("Dr. Fatima Saba", 10, 20);
+        doc.setFont('Helvetica', 'italic');
+        doc.setFontSize(11);
+        doc.text("Dermatologist (PG DIP RCP-IRELAND)", 10, 30);
+        doc.text("Master Medical Aesthetic Certified", 10, 40);
 
-            const x = 210 - width - 10; 
-            const y = 9; 
+        doc.setFont('Helvetica', 'normal');
+        doc.setFontSize(14);
+        const labelFontSize = 14;
 
-            doc.addImage(img, 'PNG', x, y, width, height);
+        let baseY = 75;
 
-            doc.setFont("Helvetica", "bold");
-            doc.setFontSize(20);
-            doc.text("Dr. Fatima Saba", 10, 20); 
-            doc.setFont("Helvetica", "italic");
-            doc.setFontSize(11);
-            doc.text("Dermatologist (PG DIP RCP-IRELAND)", 10, 30);
-            doc.text("Master Medical Aesthetic Certified", 10, 40); 
-            doc.setFont("Helvetica", "normal");
-            doc.setFontSize(14);
+        // Bold "Patient Name:" label, normal value
+        doc.setFont(undefined, 'bold');
+        doc.text("Patient Name:", 5, baseY);
+        doc.setFont(undefined, 'normal');
+        doc.text(patientName, 43, baseY);
 
-            const startY = 75; 
-            const padding = 10; 
+        doc.setFont(undefined, 'bold');
+        doc.text(`Age:`, 90, baseY);
+        doc.setFont(undefined, 'normal');
+        doc.text(age, 103, baseY);
 
-            const nameX = 5; 
-            const ageX = nameX + 80 + padding; 
-            const sexX = ageX + 20 + padding; 
-            const dateX = sexX + 20 + padding; 
+        doc.setFont(undefined, 'bold');
+        doc.text(`Sex:`, 120, baseY);
+        doc.setFont(undefined, 'normal');
+        doc.text(sex, 133, baseY);
 
-            doc.text(`Patient Name: ${patientName}`, nameX, startY);
-            doc.text(`Age: ${age}`, ageX, startY);
-            doc.text(`Sex: ${sex}`, sexX, startY);
-            doc.text(`Date: ${date}`, dateX, startY);
+        doc.setFont(undefined, 'bold');
+        doc.text(`Date:`, 160, baseY);
+        doc.setFont(undefined, 'normal');
+        doc.text(date, 175, baseY);
 
-            const prescriptionStartY = 100; 
-            const prescriptionX = 85; 
-            const maxHeight = 297 - prescriptionStartY - 20; 
+        baseY += 20;
+        doc.setFontSize(15);
+        doc.setFont(undefined, 'bold');
+        doc.text("Diagnosis:", 85, baseY);
+        doc.setFont(undefined, 'normal');
+        const diagnosisLines = doc.splitTextToSize(diagnosis, 120);
+        baseY += 10;
+        doc.text(diagnosisLines, 85, baseY);
 
-            doc.setFontSize(12);
-            doc.text("Prescription Notes:", prescriptionX, prescriptionStartY);
-            const notesLines = doc.splitTextToSize(notes, 120);
-            let currentHeight = 0; 
+        baseY += diagnosisLines.length * 10 + 10;
+        doc.setFont(undefined, 'bold');
+        doc.text("Prescription Notes:", 85, baseY);
+        doc.setFont(undefined, 'normal');
+        const notesLines = doc.splitTextToSize(notes, 120);
+        baseY += 10;
+        doc.text(notesLines, 85, baseY);
 
-            for (let i = 0; i < notesLines.length; i++) {
-                const lineHeight = 10; 
-                if (currentHeight + lineHeight > maxHeight) {
-                    doc.addPage();
-                    doc.setFillColor(129, 205, 198);
-                    doc.rect(0, 0, blueWidth, 297, 'F'); 
-                    doc.addImage(img, 'PNG', x, y, width, height); 
+        if (extendedNotes) {
+          doc.addPage();
+          doc.setFillColor(129, 205, 198);
+          doc.rect(0, 0, blueWidth, 297, 'F');
+          doc.addImage(img, 'PNG', x, y, width, height);
 
-                    doc.setFont("Helvetica", "bold");
-                    doc.setFontSize(20);
-                    doc.text("Dr. Fatima Saba", 10, 20);
-                    doc.setFont("Helvetica", "italic");
-                    doc.setFontSize(11);
-                    doc.text("Dermatologist (PG DIP RCP-IRELAND)", 10, 30);
-                    doc.text("Master Medical Aesthetic Certified", 10, 40); 
-                    currentHeight = 0;
-                }
-                doc.text(notesLines[i], prescriptionX, prescriptionStartY + 10 + currentHeight);
-                currentHeight += lineHeight; 
-            }
+          doc.setFont('Helvetica', 'bold');
+          doc.setFontSize(20);
+          doc.text("Dr. Fatima Saba", 10, 20);
+          doc.setFont('Helvetica', 'italic');
+          doc.setFontSize(11);
+          doc.text("Dermatologist (PG DIP RCP-IRELAND)", 10, 30);
+          doc.text("Master Medical Aesthetic Certified", 10, 40);
 
-            // Handle Extended Prescription Notes
-            if (extendedNotes) {
-                doc.addPage(); // Add a new page for extended notes
-                doc.setFillColor(129, 205, 198);
-                doc.rect(0, 0, blueWidth, 297, 'F'); 
-                doc.addImage(img, 'PNG', x, y, width, height); 
+          doc.setFontSize(15);
+          doc.setFont(undefined, 'bold');
+          doc.text("Extended Prescription Notes:", 85, 75);
+          doc.setFont(undefined, 'normal');
+          const extendedLines = doc.splitTextToSize(extendedNotes, 120);
+          doc.text(extendedLines, 85, 85 + 10);
+        }
 
-                doc.setFont("Helvetica", "bold");
-                doc.setFontSize(20);
-                doc.text("Dr. Fatima Saba", 10, 20);
-                doc.setFont("Helvetica", "italic");
-                doc.setFontSize(11);
-                doc.text("Dermatologist (PG DIP RCP-IRELAND)", 10, 30);
-                doc.text("Master Medical Aesthetic Certified", 10, 40); 
-
-                const extendedStartY = 75; 
-                doc.setFontSize(12);
-                doc.text("Extended Prescription Notes:", prescriptionX, extendedStartY);
-                const extendedLines = doc.splitTextToSize(extendedNotes, 120);
-                currentHeight = 0; 
-
-                for (let i = 0; i < extendedLines.length; i++) {
-                    const lineHeight = 10; 
-                    doc.text(extendedLines[i], prescriptionX, extendedStartY + 10 + currentHeight);
-                    currentHeight += lineHeight; 
-                }
-            }
-
-            // Save the PDF
-            doc.save('prescription.pdf');
-        };
+        doc.save('prescription.pdf');
+      };
     }
   </script>
 </body>
