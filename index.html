@@ -79,9 +79,12 @@
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
       const blueWidth = 80;
+      const whiteStartX = 85;
+  
+      // Ash Gray background for left column
       doc.setFillColor(129, 205, 198);
       doc.rect(0, 0, blueWidth, 297, 'F');
-
+  
       const patientName = document.getElementById('patientName').value;
       const age = document.getElementById('age').value;
       const sex = document.getElementById('sex').value;
@@ -89,97 +92,130 @@
       const diagnosis = document.getElementById('diagnosis').value;
       const notes = document.getElementById('notes').value;
       const extendedNotes = document.getElementById('extendedNotes').value;
-
+  
       const img = new Image();
       img.src = '/assets/logo.png';
-
+  
       img.onload = function () {
         const targetSize = 50;
         const scale = Math.min(targetSize / img.width, targetSize / img.height);
         const width = img.width * scale;
         const height = img.height * scale;
-        const x = 210 - width - 10;
-        const y = 9;
-
-        doc.addImage(img, 'PNG', x, y, width, height);
-
+        const logoX = 210 - width - 10;
+        const logoY = 9;
+  
+        // Add top-right logo
+        doc.addImage(img, 'PNG', logoX, logoY, width, height);
+  
+        // Doctor info (left column)
+        let leftY = 20;
         doc.setFont('Helvetica', 'bold');
         doc.setFontSize(20);
-        doc.text("Dr. Fatima Saba", 10, 20);
+        doc.text("Dr. Fatima Saba", 5, leftY);
+  
+        leftY += 10;
         doc.setFont('Helvetica', 'italic');
         doc.setFontSize(11);
-        doc.text("Dermatologist (PG DIP RCP-IRELAND)", 10, 30);
-        doc.text("Master Medical Aesthetic Certified", 10, 40);
-
+        doc.text("Dermatologist (PG DIP RCP-IRELAND)", 5, leftY);
+  
+        leftY += 10;
+        doc.text("Master Medical Aesthetic Certified", 5, leftY);
+  
+        // Patient Name with wrapping
+        leftY += 15;
+        doc.setFont('Helvetica', 'bold');
+        doc.setFontSize(12);
+        doc.text("Patient Name:", 5, leftY);
+  
+        const nameLines = doc.splitTextToSize(patientName || '-', 40);
         doc.setFont('Helvetica', 'normal');
-        doc.setFontSize(14);
-        const labelFontSize = 14;
-
-        let baseY = 75;
-
-        // Bold "Patient Name:" label, normal value
-        doc.setFont(undefined, 'bold');
-        doc.text("Patient Name:", 5, baseY);
-        doc.setFont(undefined, 'normal');
-        doc.text(patientName, 43, baseY);
-
-        doc.setFont(undefined, 'bold');
-        doc.text(`Age:`, 90, baseY);
-        doc.setFont(undefined, 'normal');
-        doc.text(age, 103, baseY);
-
-        doc.setFont(undefined, 'bold');
-        doc.text(`Sex:`, 120, baseY);
-        doc.setFont(undefined, 'normal');
-        doc.text(sex, 133, baseY);
-
-        doc.setFont(undefined, 'bold');
-        doc.text(`Date:`, 160, baseY);
-        doc.setFont(undefined, 'normal');
-        doc.text(date, 175, baseY);
-
-        baseY += 20;
+        doc.text(nameLines[0], 35, leftY);
+        for (let i = 1; i < nameLines.length; i++) {
+          leftY += 6;
+          doc.text(nameLines[i], 35, leftY);
+        }
+  
+        // Bump spacing based on name height
+        leftY += 10;
+  
+        // Age
+        doc.setFont('Helvetica', 'bold');
+        doc.text("Age:", 5, leftY);
+        doc.setFont('Helvetica', 'normal');
+        doc.text(age || '-', 35, leftY);
+        leftY += 10;
+  
+        // Sex
+        doc.setFont('Helvetica', 'bold');
+        doc.text("Sex:", 5, leftY);
+        doc.setFont('Helvetica', 'normal');
+        doc.text(sex || '-', 35, leftY);
+        leftY += 10;
+  
+        // Date
+        doc.setFont('Helvetica', 'bold');
+        doc.text("Date:", 5, leftY);
+        doc.setFont('Helvetica', 'normal');
+        doc.text(date || '-', 35, leftY);
+        leftY += 15;
+  
+        // Diagnosis
+        doc.setFont('Helvetica', 'bold');
+        doc.setFontSize(13);
+        doc.text("Diagnosis:", 5, leftY);
+        leftY += 8;
+        doc.setFont('Helvetica', 'normal');
+        const diagLines = doc.splitTextToSize(diagnosis || '-', 70);
+        doc.text(diagLines, 5, leftY);
+        leftY += diagLines.length * 6;
+  
+        // Right Column — Prescription Notes
+        let rightY = 55; // aligned with left start
+        doc.setFont('Helvetica', 'bold');
         doc.setFontSize(15);
-        doc.setFont(undefined, 'bold');
-        doc.text("Diagnosis:", 85, baseY);
-        doc.setFont(undefined, 'normal');
-        const diagnosisLines = doc.splitTextToSize(diagnosis, 120);
-        baseY += 10;
-        doc.text(diagnosisLines, 85, baseY);
-
-        baseY += diagnosisLines.length * 5 + 10;
-        doc.setFont(undefined, 'bold');
-        doc.text("Prescription Notes:", 85, baseY);
-        doc.setFont(undefined, 'normal');
-        const notesLines = doc.splitTextToSize(notes, 120);
-        baseY += 10;
-        doc.text(notesLines, 85, baseY);
-
+        doc.text("Prescription Notes:", whiteStartX, rightY);
+  
+        rightY += 10;
+        doc.setFont('Helvetica', 'normal');
+        const notesLines = doc.splitTextToSize(notes || '-', 120);
+        doc.text(notesLines, whiteStartX, rightY);
+        rightY += notesLines.length * 6;
+  
+        // Extended Notes on second page
         if (extendedNotes) {
           doc.addPage();
           doc.setFillColor(129, 205, 198);
           doc.rect(0, 0, blueWidth, 297, 'F');
-          doc.addImage(img, 'PNG', x, y, width, height);
-
+          doc.addImage(img, 'PNG', logoX, logoY, width, height);
+  
+          // Doctor info again
+          let secondLeftY = 20;
           doc.setFont('Helvetica', 'bold');
           doc.setFontSize(20);
-          doc.text("Dr. Fatima Saba", 10, 20);
+          doc.text("Dr. Fatima Saba", 5, secondLeftY);
+          secondLeftY += 10;
           doc.setFont('Helvetica', 'italic');
           doc.setFontSize(11);
-          doc.text("Dermatologist (PG DIP RCP-IRELAND)", 10, 30);
-          doc.text("Master Medical Aesthetic Certified", 10, 40);
-
+          doc.text("Dermatologist (PG DIP RCP-IRELAND)", 5, secondLeftY);
+          secondLeftY += 10;
+          doc.text("Master Medical Aesthetic Certified", 5, secondLeftY);
+  
+          // Extended notes
+          let extendedY = 75;
+          doc.setFont('Helvetica', 'bold');
           doc.setFontSize(15);
-          doc.setFont(undefined, 'bold');
-          doc.text("Extended Prescription Notes:", 85, 75);
-          doc.setFont(undefined, 'normal');
+          doc.text("Extended Prescription Notes:", whiteStartX, extendedY);
+  
+          extendedY += 10;
+          doc.setFont('Helvetica', 'normal');
           const extendedLines = doc.splitTextToSize(extendedNotes, 120);
-          doc.text(extendedLines, 85, 85 + 10);
+          doc.text(extendedLines, whiteStartX, extendedY);
         }
-
+  
         doc.save('prescription.pdf');
       };
     }
   </script>
+  
 </body>
 </html>
